@@ -1,1 +1,14 @@
-
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db\script.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: true
