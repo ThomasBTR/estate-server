@@ -1,9 +1,9 @@
 package com.estate.estateserver.controllers;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.security.RolesAllowed;
 
 @RestController
 public class LoginController {

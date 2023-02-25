@@ -1,5 +1,6 @@
 package com.estate.estateserver.configuration;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,17 +34,19 @@ public class SecurityConfiguration {
 
     /**
      * .
+     *
      * @param httpSecurity the http
      * @throws Exception the exception
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity)
             throws Exception {
-        httpSecurity.authorizeRequests()
-                .antMatchers("/admin").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/user").hasRole("USER")
-                .anyRequest().authenticated()
-                .and()
+        httpSecurity.authorizeHttpRequests(
+                        (authorize) -> authorize
+                                .requestMatchers("/resources/**", "/signup", "/about").permitAll()
+                                .requestMatchers("/admin").hasRole("ADMIN")
+                                .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
+                                .anyRequest().authenticated())
                 .formLogin()
                 .and()
                 .logout().deleteCookies("JSESSIONID");
