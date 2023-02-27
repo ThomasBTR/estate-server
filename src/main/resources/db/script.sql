@@ -7,11 +7,10 @@ USE ESTATE;
 CREATE TABLE USERS (
   id integer PRIMARY KEY AUTO_INCREMENT,
   email varchar(255),
-  name varchar(255),
-  password varchar(255),
+  name varchar(255) not null,
+  password varchar(255) not null,
   created_at timestamp,
-  updated_at timestamp,
-  role ENUM('admin', 'user') DEFAULT 'user'
+  updated_at timestamp default current_timestamp
 );
 
 CREATE TABLE RENTALS (
@@ -23,7 +22,7 @@ CREATE TABLE RENTALS (
   description varchar(2000),
   owner_id integer NOT NULL,
   created_at timestamp,
-  updated_at timestamp
+  updated_at timestamp default current_timestamp
 );
 
 CREATE TABLE MESSAGES (
@@ -32,7 +31,7 @@ CREATE TABLE MESSAGES (
   user_id integer,
   message varchar(2000),
   created_at timestamp,
-  updated_at timestamp
+  updated_at timestamp default current_timestamp
 );
 
 CREATE UNIQUE INDEX USERS_index ON USERS (email);
