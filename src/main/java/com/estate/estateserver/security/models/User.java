@@ -1,4 +1,4 @@
-package com.estate.estateserver.models;
+package com.estate.estateserver.security.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,11 +24,9 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
-
     private String email;
     private String name;
     private String password;
-
     private Date createdAt;
     private Date updatedAt;
 
