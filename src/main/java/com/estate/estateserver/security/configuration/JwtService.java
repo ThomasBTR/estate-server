@@ -22,6 +22,7 @@ public class JwtService {
     private static final String SECRET_KEY = "404E635266556A576E5A7234753778214125442A472D4B6150645367566B5970";
 
     @Value(value = "${estate.jwt.expiration}")
+    // Currently 1 day = 86400000 seconds
     private long expirationTime;
 
     public String extractUsername(String token) {
