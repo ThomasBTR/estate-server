@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .shouldFilterAllDispatcherTypes(true)
-                .requestMatchers("/api/auth/**")
+                .requestMatchers("/api/auth/register","/api/auth/login","/api/auth/**")
                     .permitAll()
                 .anyRequest()
                     .authenticated()

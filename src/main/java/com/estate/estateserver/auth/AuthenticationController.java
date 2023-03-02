@@ -2,10 +2,7 @@ package com.estate.estateserver.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -13,6 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationService service;
+
+//    @GetMapping("/me")
+//    public ResponseEntity<String> test()
+//    {
+//        return ResponseEntity.ok();
+//    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(

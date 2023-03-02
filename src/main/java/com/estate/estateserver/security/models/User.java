@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "USERS")
-
 public class User implements UserDetails {
     @Id
     @NotNull
