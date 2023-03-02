@@ -18,3 +18,7 @@ spring:
 estate:
   jwt:
     expiration: 86400000
+logging:
+  level:
+    org:
+      springframework: DEBUG
