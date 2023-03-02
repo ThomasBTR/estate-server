@@ -39,11 +39,11 @@ public class AuthenticationService {
     public AuthenticationResponse login(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        request.getLogin(),
+        request.getPassword()
                 )
         );
-        User user = repository.findByEmail(request.getEmail())
+        User user = repository.findByEmail(request.getLogin())
                 //TODO: change to custom exception
                 .orElseThrow(() -> new IllegalStateException("User not found"));
         String token = jwtService.generateToken(user);
