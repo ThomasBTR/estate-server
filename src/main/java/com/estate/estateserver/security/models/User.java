@@ -1,6 +1,7 @@
 package com.estate.estateserver.security.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,11 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "USERS")
-public class User implements UserDetails {
 
+public class User implements UserDetails {
     @Id
-    @GeneratedValue
-    private Integer id;
+    @NotNull
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "email")
     private String email;
     @Column(name = "name")
@@ -35,7 +38,10 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @Column(name = "enabled")
+    private boolean enabled;
 
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 

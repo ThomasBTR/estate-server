@@ -5,31 +5,33 @@ CREATE DATABASE ESTATE;
 USE ESTATE;
 
 CREATE TABLE USERS (
-  id integer PRIMARY KEY AUTO_INCREMENT,
-  email varchar(255),
-  name varchar(255) not null,
-  password varchar(255) not null,
+  id INT PRIMARY KEY AUTO_INCREMENT NOT NULL ,
+  email VARCHAR(255),
+  name VARCHAR(255),
+  password VARCHAR(255),
+  role VARCHAR(255),
+  enabled TINYINT NOT NULL DEFAULT 1,
   created_at timestamp,
   updated_at timestamp default current_timestamp
 );
 
 CREATE TABLE RENTALS (
-  id integer PRIMARY KEY AUTO_INCREMENT,
-  name varchar(255),
+  id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  name VARCHAR(255),
   surface numeric,
   price numeric,
-  picture varchar(255),
-  description varchar(2000),
-  owner_id integer NOT NULL,
+  picture VARCHAR(255),
+  description VARCHAR(2000),
+  owner_id INT NOT NULL,
   created_at timestamp,
   updated_at timestamp default current_timestamp
 );
 
 CREATE TABLE MESSAGES (
-  id integer PRIMARY KEY AUTO_INCREMENT,
-  rental_id integer,
-  user_id integer,
-  message varchar(2000),
+  id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  rental_id INT,
+  user_id INT,
+  message VARCHAR(2000),
   created_at timestamp,
   updated_at timestamp default current_timestamp
 );
