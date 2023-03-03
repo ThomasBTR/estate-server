@@ -1,26 +1,25 @@
 package com.estate.estateserver.auth;
 
-import com.estate.estateserver.mapper.IUserMapper;
+import com.estate.estateserver.models.Role;
 import com.estate.estateserver.models.TokenEntity;
 import com.estate.estateserver.models.TokenType;
-import com.estate.estateserver.security.configuration.JwtService;
-import com.estate.estateserver.models.Role;
 import com.estate.estateserver.models.User;
 import com.estate.estateserver.repositories.ITokenRepository;
 import com.estate.estateserver.repositories.IUserRepository;
+import com.estate.estateserver.security.configuration.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final IUserRepository repository;
+    private final IUserRepository userRepository;
 
     private final PasswordEncoder encoder;
 
@@ -34,9 +33,12 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .enabled(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
-        User savedUser= repository.save(user);
-        String token = jwtService.generateToken(user);
+        User savedUser = userRepository.save(user);
+        String token = jwtService.generateToken(savedUser);
         saveUserToken(savedUser, token);
         return AuthenticationResponse.builder()
                 .token(token)
@@ -50,7 +52,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        User user = repository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
@@ -61,30 +63,24 @@ public class AuthenticationService {
     }
 
     public UserResponse me(String token) {
-        User verifiedUser = verifyToken(token);
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        verifiedUser.getEmail(),
-                        verifiedUser.getPassword()
-                )
-        );
-        User user = repository.findByEmail(verifiedUser.getEmail())
+        String email = getUsernameFromToken(token).getEmail();
+        User user = userRepository.findByEmail(email)
                 .orElseThrow();
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
-        return IUserMapper.INSTANCE.toUserResponse(user);
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
     }
 
-    private User verifyToken(String token) {
-        String username = jwtService.extractUsername(token);
-        User user = repository.findByEmail(username)
+    private User getUsernameFromToken(String token) {
+        return userRepository.findByEmail(jwtService.extractUsername(token.substring(7)))
                 .orElseThrow();
-        List<TokenEntity> tokenEntities = tokenRepository.findAllValidTokenByUser(user.getId());
-        if (tokenEntities.size() != 1 || !tokenEntities.get(0).getToken().equals(token)) {
-            throw new RuntimeException("Token not found");
-        }
-        return user;
     }
 
     private void saveUserToken(User user, String jwtToken) {
