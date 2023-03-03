@@ -1,1 +1,29 @@
 
+spring:
+  application:
+    name: estate
+  datasource:
+    url: jdbc:mysql://localhost:3306/ESTATE?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db\script.sql
+      continue-on-error: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+estate:
+  jwt:
+    expiration: 86400000
+logging:
+  level:
+    org:
+      springframework: INFO
+server:
+  port: 3001

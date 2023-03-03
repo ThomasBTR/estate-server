@@ -1,23 +1,17 @@
 package com.estate.estateserver.controllers;
 
-import jakarta.annotation.security.RolesAllowed;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@RequestMapping("/api/user")
 public class LoginController {
 
-    @RequestMapping("/*")
-    @RolesAllowed("USER")
+    @GetMapping()
     public String getUser() {
         return "Welcome, user";
-    }
-
-    @RequestMapping("/admin")
-    @RolesAllowed("ADMIN")
-    public String getAdmin() {
-        return "Welcome, admin";
     }
 
 }
