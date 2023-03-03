@@ -1,6 +1,6 @@
-package com.estate.estateserver.security.repositories;
+package com.estate.estateserver.repositories;
 
-import com.estate.estateserver.security.models.User;
+import com.estate.estateserver.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

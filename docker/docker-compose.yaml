@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   mysql:
+    restart: on-failure
     image: mysql:5.7
     ports:
       # <Port exposed> : < MySQL Port running inside container>

@@ -1,6 +1,6 @@
 package com.estate.estateserver.security.configuration;
 
-import com.estate.estateserver.security.repositories.IUserRepository;
+import com.estate.estateserver.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -11,11 +11,11 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
-//    @GetMapping("/me")
-//    public ResponseEntity<String> test()
-//    {
-//        return ResponseEntity.ok();
-//    }
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> me(@RequestHeader("Authorization") String token)
+    {
+        return ResponseEntity.ok(service.me(token));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
