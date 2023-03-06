@@ -18,7 +18,7 @@ public class TokenEntity implements Serializable {
   public static final long serialVersionUID = 2456154887452124L;
 
   @Id
-  @Column(name = "id")
+  @Column(name = "id", unique = true, nullable = false)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 

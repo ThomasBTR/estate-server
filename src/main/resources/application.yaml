@@ -12,6 +12,7 @@ spring:
       mode: always
       schema-locations: classpath:db\script.sql
       continue-on-error: false
+      data-locations: classpath:db\script.sql
   jpa:
     hibernate:
       ddl-auto: none
