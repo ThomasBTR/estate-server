@@ -1,5 +1,10 @@
-package com.estate.estateserver.auth;
+package com.estate.estateserver.controllers;
 
+import com.estate.estateserver.models.requests.AuthenticationRequest;
+import com.estate.estateserver.models.responses.AuthenticationResponse;
+import com.estate.estateserver.models.requests.RegisterRequest;
+import com.estate.estateserver.models.responses.UserResponse;
+import com.estate.estateserver.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.estate.estateserver.repositories;
 
-import com.estate.estateserver.models.TokenEntity;
+import com.estate.estateserver.models.entities.TokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
