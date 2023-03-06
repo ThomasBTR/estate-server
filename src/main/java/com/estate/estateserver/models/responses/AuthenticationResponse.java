@@ -1,4 +1,4 @@
-package com.estate.estateserver.auth;
+package com.estate.estateserver.models.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
-    private String email;
-    String password;
+public class AuthenticationResponse {
+    private String token;
 }

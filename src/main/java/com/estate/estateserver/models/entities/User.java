@@ -1,4 +1,4 @@
-package com.estate.estateserver.models;
+package com.estate.estateserver.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

@@ -1,9 +1,13 @@
-package com.estate.estateserver.auth;
+package com.estate.estateserver.services;
 
-import com.estate.estateserver.models.Role;
-import com.estate.estateserver.models.TokenEntity;
-import com.estate.estateserver.models.TokenType;
-import com.estate.estateserver.models.User;
+import com.estate.estateserver.models.requests.AuthenticationRequest;
+import com.estate.estateserver.models.responses.AuthenticationResponse;
+import com.estate.estateserver.models.requests.RegisterRequest;
+import com.estate.estateserver.models.responses.UserResponse;
+import com.estate.estateserver.models.entities.Role;
+import com.estate.estateserver.models.entities.TokenEntity;
+import com.estate.estateserver.models.entities.TokenType;
+import com.estate.estateserver.models.entities.User;
 import com.estate.estateserver.repositories.ITokenRepository;
 import com.estate.estateserver.repositories.IUserRepository;
 import com.estate.estateserver.security.configuration.JwtService;
