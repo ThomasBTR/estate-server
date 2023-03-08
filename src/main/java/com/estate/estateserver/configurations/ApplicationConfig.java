@@ -1,4 +1,4 @@
-package com.estate.estateserver.security.configuration;
+package com.estate.estateserver.configurations;
 
 import com.estate.estateserver.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;

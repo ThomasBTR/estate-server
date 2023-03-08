@@ -1,16 +1,16 @@
 package com.estate.estateserver.services;
 
-import com.estate.estateserver.models.requests.AuthenticationRequest;
-import com.estate.estateserver.models.responses.AuthenticationResponse;
-import com.estate.estateserver.models.requests.RegisterRequest;
-import com.estate.estateserver.models.responses.UserResponse;
+import com.estate.estateserver.configurations.security.JwtService;
 import com.estate.estateserver.models.entities.Role;
 import com.estate.estateserver.models.entities.TokenEntity;
 import com.estate.estateserver.models.entities.TokenType;
 import com.estate.estateserver.models.entities.User;
+import com.estate.estateserver.models.requests.AuthenticationRequest;
+import com.estate.estateserver.models.requests.RegisterRequest;
+import com.estate.estateserver.models.responses.AuthenticationResponse;
+import com.estate.estateserver.models.responses.UserResponse;
 import com.estate.estateserver.repositories.ITokenRepository;
 import com.estate.estateserver.repositories.IUserRepository;
-import com.estate.estateserver.security.configuration.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

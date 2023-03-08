@@ -1,4 +1,4 @@
-package com.estate.estateserver.security.configuration;
+package com.estate.estateserver.configurations.security;
 
 import com.estate.estateserver.repositories.ITokenRepository;
 import jakarta.servlet.FilterChain;

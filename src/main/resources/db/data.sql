@@ -1,4 +1,14 @@
-INSERT INTO RENTALS(id, name, surface, price, picture, description, owner_id, created_at, updated_at)
+SET FOREIGN_KEY_CHECKS = 0;
+
+INSERT INTO RENTALS(id,
+                    name,
+                    surface,
+                    price,
+                    picture,
+                    description,
+                    owner_id,
+                    created_at,
+                    updated_at)
 VALUES (1,
         'test house 1',
         432,
