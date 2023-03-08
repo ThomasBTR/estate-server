@@ -11,6 +11,7 @@ import com.estate.estateserver.models.responses.AuthenticationResponse;
 import com.estate.estateserver.models.responses.UserResponse;
 import com.estate.estateserver.repositories.ITokenRepository;
 import com.estate.estateserver.repositories.IUserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class AuthenticationService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        User savedUser = userRepository.save(user);
+        User savedUser = getSavedUser(user);
         String token = jwtService.generateToken(savedUser);
         saveUserToken(savedUser, token);
         return AuthenticationResponse.builder()
@@ -56,8 +58,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+        User user = getOrElseThrowUser(request.getEmail());
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
@@ -66,10 +67,10 @@ public class AuthenticationService {
                 .build();
     }
 
+
     public UserResponse me(String token) {
         String email = getUsernameFromToken(token).getEmail();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow();
+        User user = getOrElseThrowUser(email);
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
@@ -82,11 +83,19 @@ public class AuthenticationService {
                 .build();
     }
 
+    @Transactional
+    private User getOrElseThrowUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow();
+    }
+
+    @Transactional
     private User getUsernameFromToken(String token) {
         return userRepository.findByEmail(jwtService.extractUsername(token.substring(7)))
                 .orElseThrow();
     }
 
+    @Transactional
     private void saveUserToken(User user, String jwtToken) {
         var token = TokenEntity.builder()
                 .user(user)
@@ -99,13 +108,28 @@ public class AuthenticationService {
     }
 
     private void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        var validUserTokens = getAllValidTokenByUser(user);
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(tokenEntity -> {
             tokenEntity.setExpired(true);
             tokenEntity.setRevoked(true);
         });
+        saveUserTokens(validUserTokens);
+    }
+
+    @Transactional
+    private User getSavedUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    private void saveUserTokens(List<TokenEntity> validUserTokens) {
         tokenRepository.saveAll(validUserTokens);
+    }
+
+    @Transactional
+    private List<TokenEntity> getAllValidTokenByUser(User user) {
+        return tokenRepository.findAllValidTokenByUser(user.getId());
     }
 }
