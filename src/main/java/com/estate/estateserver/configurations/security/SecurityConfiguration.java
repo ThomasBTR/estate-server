@@ -1,4 +1,4 @@
-package com.estate.estateserver.security.configuration;
+package com.estate.estateserver.configurations.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .shouldFilterAllDispatcherTypes(true)
-                .requestMatchers("/api/auth/register","/api/auth/login","/api/auth/**")
+                .requestMatchers("/api/auth/register", "/api/auth/login", "/api/**")
                     .permitAll()
                 .anyRequest()
                     .authenticated()

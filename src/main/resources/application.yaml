@@ -12,7 +12,7 @@ spring:
       mode: always
       schema-locations: classpath:db\script.sql
       continue-on-error: false
-      data-locations: classpath:db\script.sql
+      data-locations: classpath:db\data.sql
   jpa:
     hibernate:
       ddl-auto: none
@@ -25,6 +25,8 @@ estate:
 logging:
   level:
     org:
-      springframework: INFO
+      springframework: DEBUG
+    com:
+      estate: DEBUG
 server:
   port: 3001

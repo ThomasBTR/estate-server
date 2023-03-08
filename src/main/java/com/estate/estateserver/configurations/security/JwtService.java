@@ -1,4 +1,4 @@
-package com.estate.estateserver.security.configuration;
+package com.estate.estateserver.configurations.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
