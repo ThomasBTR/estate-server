@@ -25,8 +25,8 @@ public class User implements UserDetails {
     public static final long serialVersionUID = 1589432543786L;
 
     @Id
-    @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "email")
@@ -47,7 +47,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<TokenEntity> tokens;
 

@@ -18,11 +18,10 @@ public class TokenEntity implements Serializable {
   public static final long serialVersionUID = 2456154887452124L;
 
   @Id
-  @Column(name = "id", unique = true, nullable = false)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "token", unique = true)
+  @Column(name = "token")
   private String token;
 
   @Enumerated(EnumType.STRING)
@@ -33,7 +32,7 @@ public class TokenEntity implements Serializable {
   @Column(name = "expired")
   private boolean expired;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "user_id")
   private User user;
 }
