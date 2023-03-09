@@ -38,17 +38,32 @@ A step by step series of examples that tell you how to get a development env run
     mvn clean package
     ```
 
+## Getting started with the API
 
+The documentation is based on the [spring doc](https://springdoc.org/v2/) specification.
 
-```
-Give the example
+Configured endpoints are definied in the application.yaml as follow :
+
+```yaml
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
 ```
 
-And repeat
+### A fair warning :
 
-```
-until finished
-```
+***A specific endpoint is defined in configuration to get the documentation of the API out of the security scope.
+</br>This is done only for demonstration purpose, in a real world application, the documentation should be secured.***
+
+The documentation path is defined per se in spring-doc specification of
+the [swagger-ui](https://springdoc.org/v2/#getting-started)
+and [api-docs](https://springdoc.org/v2/#spring-webmvc-support) endpoints.
+
+For example, if you run on your machine without changing the server port, the documentation will be available
+here: http://localhost:3001/swagger-ui/index.html </br>
+and you will get the API documentation from this link : http://localhost:3001/api-docs
 
 End with an example of getting some data out of the system or using it for a little demo
 
