@@ -31,9 +31,9 @@ CREATE TABLE TOKENS
     id         INTEGER AUTO_INCREMENT NOT NULL,
     token      VARCHAR(255),
     user_id    INTEGER,
-    token_type VARCHAR(12)                        NOT NULL,
-    revoked    BOOLEAN                            NOT NULL,
-    expired    BOOLEAN                            NOT NULL,
+    token_type VARCHAR(12)            NOT NULL,
+    revoked    TINYINT(1)             NOT NULL DEFAULT 0,
+    expired    TINYINT(1)             NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -44,9 +44,9 @@ CREATE TABLE USERS
     name       VARCHAR(255),
     password   VARCHAR(255),
     role       VARCHAR(255),
-    enabled    BOOLEAN   DEFAULT TRUE,
+    enabled    TINYINT(1)             NOT NULL DEFAULT 1,
     created_at timestamp,
-    updated_at timestamp default current_timestamp,
+    updated_at timestamp                       default current_timestamp,
     PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX USERS_index ON USERS (email);
@@ -65,6 +65,6 @@ ALTER TABLE MESSAGES
 
 ALTER TABLE TOKENS
     ADD CONSTRAINT FKh1gwf3xb2p9sp457gm8oycrsr
-    FOREIGN KEY (user_id) REFERENCES USERS (id);
+        FOREIGN KEY (user_id) REFERENCES USERS (id);
 
 

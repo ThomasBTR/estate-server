@@ -1,7 +1,6 @@
 package com.estate.estateserver.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,7 +39,7 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", columnDefinition = "TINYINT(1)")
     private boolean enabled;
 
     @Column(name = "role")

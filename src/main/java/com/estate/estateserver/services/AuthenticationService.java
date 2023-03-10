@@ -71,9 +71,6 @@ public class AuthenticationService {
     public UserResponse me(String token) {
         String email = getUsernameFromToken(token).getEmail();
         User user = getOrElseThrowUser(email);
-        String jwtToken = jwtService.generateToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
