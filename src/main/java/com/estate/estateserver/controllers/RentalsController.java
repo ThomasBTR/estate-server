@@ -2,6 +2,7 @@ package com.estate.estateserver.controllers;
 
 import com.estate.estateserver.models.responses.RentalListResponse;
 import com.estate.estateserver.services.RentalServices;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "token")
 public class RentalsController {
 
     private final RentalServices rentalServices;
 
     @GetMapping("/rentals")
-//    TODO: Verify if this is needed to get security available on the swaggger-ui
-//    @Operation(security = {@SecurityRequirement(name = "token")})
     public ResponseEntity<RentalListResponse> getRentals() {
         return ResponseEntity.ok(rentalServices.getAllRentals());
     }

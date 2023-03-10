@@ -42,12 +42,12 @@ A step by step series of examples that tell you how to get a development env run
 
 The documentation is based on the [spring doc](https://springdoc.org/v2/) specification.
 
-Configured endpoints are definied in the application.yaml as follow :
+Configured endpoints are definied in the application.yaml as follows :
 
 ```yaml
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /api/v1/docs
   swagger-ui:
     path: /swagger-ui
 ```
@@ -63,7 +63,7 @@ and [api-docs](https://springdoc.org/v2/#spring-webmvc-support) endpoints.
 
 For example, if you run on your machine without changing the server port, the documentation will be available
 here: http://localhost:3001/swagger-ui/index.html </br>
-and you will get the API documentation from this link : http://localhost:3001/api-docs
+and you will get the API documentation from this link : http://localhost:3001/api/v1/docs
 
 End with an example of getting some data out of the system or using it for a little demo
 
@@ -77,7 +77,7 @@ Unit test are not on the scope of this project.
     mvn clean test
     ```
 
-### Break down into end to end tests -currently not implemented
+### Break down into end-to-end tests -currently not implemented
 
 End to end or integration tests are not on the scope of this project.
 
