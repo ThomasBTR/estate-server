@@ -42,7 +42,7 @@ A step by step series of examples that tell you how to get a development env run
 
 The documentation is based on the [spring doc](https://springdoc.org/v2/) specification.
 
-Configured endpoints are definied in the application.yaml as follows :
+Configured endpoints are defined in the application.yaml as follows :
 
 ```yaml
 springdoc:
