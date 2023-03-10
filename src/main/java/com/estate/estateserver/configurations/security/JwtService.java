@@ -1,5 +1,6 @@
 package com.estate.estateserver.configurations.security;
 
+import com.estate.estateserver.repositories.ITokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,6 +25,11 @@ public class JwtService {
     @Value(value = "${estate.jwt.expiration}")
     // Currently 1 day = 86400000 seconds
     private long expirationTime;
+    private final ITokenRepository iTokenRepository;
+
+    public JwtService(ITokenRepository iTokenRepository) {
+        this.iTokenRepository = iTokenRepository;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -54,7 +60,13 @@ public class JwtService {
 
     public Boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && !isTokenRevoked(token));
+    }
+
+    private boolean isTokenRevoked(String token) {
+        return iTokenRepository.findByToken(token)
+                .map(t -> !t.isExpired() && !t.isRevoked())
+                .orElse(false);
     }
 
     private boolean isTokenExpired(String token) {
