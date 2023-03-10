@@ -1,9 +1,8 @@
-
 spring:
   application:
     name: estate
   datasource:
-    url: jdbc:mysql://localhost:3306/ESTATE?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/ESTATE
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,6 +11,7 @@ spring:
       mode: always
       schema-locations: classpath:db\script.sql
       continue-on-error: false
+      data-locations: classpath:db\data.sql
   jpa:
     hibernate:
       ddl-auto: none
@@ -25,5 +25,19 @@ logging:
   level:
     org:
       springframework: INFO
+    com:
+      estate: DEBUG
 server:
   port: 3001
+# swagger-ui custom path
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true  #disable swagger-ui endpoint with false value
+  # /api-docs endpoint custom path
+  api-docs:
+    path: /api/v1/docs
+    enabled: true # disable api-docs endpoint with false value
+  show-oauth2-endpoint: true
+  show-login-endpoint: true
+

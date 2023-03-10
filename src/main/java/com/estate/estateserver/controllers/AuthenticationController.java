@@ -1,5 +1,12 @@
-package com.estate.estateserver.auth;
+package com.estate.estateserver.controllers;
 
+import com.estate.estateserver.models.requests.AuthenticationRequest;
+import com.estate.estateserver.models.requests.RegisterRequest;
+import com.estate.estateserver.models.responses.AuthenticationResponse;
+import com.estate.estateserver.models.responses.UserResponse;
+import com.estate.estateserver.services.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +19,7 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @GetMapping("/me")
+    @Operation(security = {@SecurityRequirement(name = "token")})
     public ResponseEntity<UserResponse> me(@RequestHeader("Authorization") String token)
     {
         return ResponseEntity.ok(service.me(token));

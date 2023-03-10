@@ -1,6 +1,5 @@
-package com.estate.estateserver.security.configuration;
+package com.estate.estateserver.configurations.security;
 
-import com.estate.estateserver.repositories.ITokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final ITokenRepository tokenRepository;
 
 
     @Override
@@ -33,19 +31,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
+        final String requestURI = request.getRequestURI();
         final String jwt;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        String userEmail;
+        // Do not filter login and register requests as well as swagger-ui and api-docs requests
+        if (requestURI.contains("/api/auth/login") || requestURI.contains("/api/auth/register")
+                || requestURI.contains("swagger-ui") || requestURI.contains("api/v1/docs")) {
             filterChain.doFilter(request, response);
             return;
         }
         jwt = authHeader.substring(7);
-        String userEmail = jwtService.extractUsername(jwt);
+        userEmail = jwtService.extractUsername(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails currentUserDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            var isTokenValid = tokenRepository.findByToken(jwt)
-                    .map(t -> !t.isExpired() && !t.isRevoked())
-                    .orElse(false);
-            if (jwtService.isTokenValid(jwt, currentUserDetails) && !isTokenValid) {
+            if (Boolean.TRUE.equals(jwtService.isTokenValid(jwt, currentUserDetails))) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         currentUserDetails,
                         null,

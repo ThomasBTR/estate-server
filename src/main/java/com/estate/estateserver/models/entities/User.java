@@ -1,11 +1,7 @@
-package com.estate.estateserver.models;
+package com.estate.estateserver.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,8 +24,8 @@ public class User implements UserDetails {
     public static final long serialVersionUID = 1589432543786L;
 
     @Id
-    @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "email")
@@ -40,14 +39,15 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", columnDefinition = "TINYINT(1)")
     private boolean enabled;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<TokenEntity> tokens;
 
     @Override
@@ -109,5 +109,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && enabled == user.enabled && Objects.equals(email, user.email) && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && role == user.role && Objects.equals(tokens, user.tokens);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, name, password, createdAt, updatedAt, enabled, role, tokens);
     }
 }

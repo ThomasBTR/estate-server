@@ -1,4 +1,4 @@
-package com.estate.estateserver.auth;
+package com.estate.estateserver.models.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
