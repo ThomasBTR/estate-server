@@ -1,5 +1,6 @@
 package com.estate.estateserver.configurations.security;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@io.swagger.v3.oas.annotations.security.SecurityScheme(name = "token", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -28,8 +30,8 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .shouldFilterAllDispatcherTypes(true)
-                .requestMatchers("/swagger-ui/**", "/api-docs", "/api-docs/swagger-config") // Enable access to swagger documentation in html and json format
+                // Enable access to swagger documentation in html and json format for all users
+                .requestMatchers("/swagger-ui**", "/swagger-ui/**", "**/swagger-ui", "**/swagger-ui.html", "/api/v1/v1/docs", "/api/v1/docs/**", "/api/v1/docs/swagger-config")
                 .permitAll()
                 .requestMatchers("/api/auth/register", "/api/auth/login", "/api/**")
                 .permitAll()
@@ -43,6 +45,7 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public OpenAPI customOpenAPI() {
