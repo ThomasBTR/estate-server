@@ -1,5 +1,6 @@
 package com.estate.estateserver.services;
 
+
 import com.estate.estateserver.configurations.security.JwtService;
 import com.estate.estateserver.models.entities.Role;
 import com.estate.estateserver.models.entities.TokenEntity;
@@ -11,13 +12,13 @@ import com.estate.estateserver.models.responses.AuthenticationResponse;
 import com.estate.estateserver.models.responses.UserResponse;
 import com.estate.estateserver.repositories.ITokenRepository;
 import com.estate.estateserver.repositories.IUserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -81,19 +82,19 @@ public class AuthenticationService {
     }
 
     @Transactional
-    private User getOrElseThrowUser(String email) {
+    User getOrElseThrowUser(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow();
     }
 
     @Transactional
-    private User getUsernameFromToken(String token) {
+    User getUsernameFromToken(String token) {
         return userRepository.findByEmail(jwtService.extractUsername(token.substring(7)))
                 .orElseThrow();
     }
 
     @Transactional
-    private void saveUserToken(User user, String jwtToken) {
+    void saveUserToken(User user, String jwtToken) {
         var token = TokenEntity.builder()
                 .user(user)
                 .token(jwtToken)
@@ -116,17 +117,17 @@ public class AuthenticationService {
     }
 
     @Transactional
-    private User getSavedUser(User user) {
+    User getSavedUser(User user) {
         return userRepository.save(user);
     }
 
     @Transactional
-    private void saveUserTokens(List<TokenEntity> validUserTokens) {
+    void saveUserTokens(List<TokenEntity> validUserTokens) {
         tokenRepository.saveAll(validUserTokens);
     }
 
     @Transactional
-    private List<TokenEntity> getAllValidTokenByUser(User user) {
+    List<TokenEntity> getAllValidTokenByUser(User user) {
         return tokenRepository.findAllValidTokenByUser(user.getId());
     }
 }
