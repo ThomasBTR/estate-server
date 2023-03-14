@@ -17,7 +17,7 @@ public class RentalsController {
 
     private final RentalServices rentalServices;
 
-    @GetMapping("/rentals")
+    @GetMapping(value = "/rentals", produces = "application/json")
     public ResponseEntity<RentalListResponse> getRentals() {
         return ResponseEntity.ok(rentalServices.getAllRentals());
     }

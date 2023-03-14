@@ -2,6 +2,8 @@ package com.estate.estateserver.configurations.security;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,26 +32,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * <p>Provides HttpServletRequest and HttpServletResponse arguments instead of the
      * default ServletRequest and ServletResponse ones.
      *
-     * @param request
-     * @param response
-     * @param filterChain
+     * @param request     current HTTP request
+     * @param response    current HTTP response
+     * @param filterChain chain of filters
      */
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
-
             throws ServletException, IOException {
         {
+            try{
+                filterOutOrVerifyToken(request);
+                filterChain.doFilter(request, response);
+            } catch (AccessDeniedException e) {
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+            }
+        }
+    }
 
-            final String authHeader = request.getHeader("Authorization");
-            final String requestURI = request.getRequestURI();
+    private void filterOutOrVerifyToken(HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        final String requestURI = request.getRequestURI();
+        // Do not filter login and register requests as well as swagger-ui and api-docs requests
+        if (!requestURI.contains("/api/auth/login") && !requestURI.contains("/api/auth/register")
+                && !requestURI.contains("swagger-ui") && !requestURI.contains("api/v1/docs")) {
+            verifyJwtToken(request, authHeader);
+        }
+    }
+
+    private void verifyJwtToken(HttpServletRequest request, String authHeader) {
+        try{
+
             final String jwt;
             String userEmail;
-            // Do not filter login and register requests as well as swagger-ui and api-docs requests
-            if (requestURI.contains("/api/auth/login") || requestURI.contains("/api/auth/register")
-                    || requestURI.contains("swagger-ui") || requestURI.contains("api/v1/docs")) {
-                filterChain.doFilter(request, response);
-                return;
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                throw new AccessDeniedException("Access denied");
             }
             jwt = authHeader.substring(7);
             userEmail = jwtService.extractUsername(jwt);
@@ -67,7 +84,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-            filterChain.doFilter(request, response);
+        } catch (AccessDeniedException e) {
+            throw new AccessDeniedException("Access denied");
         }
+
     }
 }
