@@ -2,6 +2,7 @@ package com.estate.estateserver.services;
 
 import com.estate.estateserver.models.entities.Rental;
 import com.estate.estateserver.models.responses.RentalListResponse;
+import com.estate.estateserver.models.responses.RentalResponse;
 import com.estate.estateserver.repositories.IRentalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,15 @@ public class RentalServices {
         return rentalListResponse;
     }
 
-    public RentalListResponse postRentals(List<Rental> rentals) {
+    public RentalListResponse postRentals(List<RentalResponse> rentals) {
         RentalListResponse postRentalResponse = new RentalListResponse();
         try {
+            List<Rental> rentalsList = RentalResponse.toEntity(rentals);
             //1. Retrieve all rentals
-            rentals = saveAllRentals(rentals);
+            rentalsList = saveAllRentals(rentalsList);
             //2.Verify if there are rentals and return the list of rentals on a response object
             if (!rentals.isEmpty()) {
+                rentals = RentalResponse.fromEntity(rentalsList);
                 postRentalResponse = RentalListResponse.builder().rentals(rentals).build();
             }
         } catch (Exception e) {
