@@ -1,6 +1,5 @@
 package com.estate.estateserver.models.responses;
 
-import com.estate.estateserver.models.entities.Rental;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +16,6 @@ public class RentalListResponse {
 
     @Schema(type = "string", description = "token")
 
-    List<Rental> rentals;
+    List<RentalResponse> rentals;
 
 }
