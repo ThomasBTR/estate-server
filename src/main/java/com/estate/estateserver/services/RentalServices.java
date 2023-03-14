@@ -34,8 +34,29 @@ public class RentalServices {
         return rentalListResponse;
     }
 
+    public RentalListResponse postRentals(List<Rental> rentals) {
+        RentalListResponse postRentalResponse = new RentalListResponse();
+        try {
+            //1. Retrieve all rentals
+            rentals = saveAllRentals(rentals);
+            //2.Verify if there are rentals and return the list of rentals on a response object
+            if (!rentals.isEmpty()) {
+                postRentalResponse = RentalListResponse.builder().rentals(rentals).build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return postRentalResponse;
+    }
+
     @Transactional
     List<Rental> findAllRentals() {
         return rentalRepository.findAll();
+    }
+
+    @Transactional
+    List<Rental> saveAllRentals(List<Rental> rentals) {
+        return rentalRepository.saveAll(rentals);
     }
 }
