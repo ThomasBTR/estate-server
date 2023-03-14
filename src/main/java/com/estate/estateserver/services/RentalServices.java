@@ -3,10 +3,10 @@ package com.estate.estateserver.services;
 import com.estate.estateserver.models.entities.Rental;
 import com.estate.estateserver.models.responses.RentalListResponse;
 import com.estate.estateserver.repositories.IRentalRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -35,7 +35,7 @@ public class RentalServices {
     }
 
     @Transactional
-    private List<Rental> findAllRentals() {
+    List<Rental> findAllRentals() {
         return rentalRepository.findAll();
     }
 }

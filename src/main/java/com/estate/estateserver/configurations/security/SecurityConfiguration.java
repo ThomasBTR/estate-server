@@ -31,9 +31,9 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 // Enable access to swagger documentation in html and json format for all users
-                .requestMatchers("/swagger-ui**", "/swagger-ui/**", "**/swagger-ui", "**/swagger-ui.html", "/api/v1/v1/docs", "/api/v1/docs/**", "/api/v1/docs/swagger-config")
+                .antMatchers("/swagger-ui**", "/swagger-ui/**", "**/swagger-ui", "**/swagger-ui.html", "/api/v1/v1/docs", "/api/v1/docs/**", "/api/v1/docs/swagger-config")
                 .permitAll()
-                .requestMatchers("/api/auth/register", "/api/auth/login", "/api/**")
+                .antMatchers("/api/auth/register", "/api/auth/login", "/api/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
