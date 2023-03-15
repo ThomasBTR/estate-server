@@ -1,6 +1,9 @@
 package com.estate.estateserver.services;
 
+import com.estate.estateserver.exceptions.RepositoryException;
+import com.estate.estateserver.mappers.IRentalMapper;
 import com.estate.estateserver.models.entities.Rental;
+import com.estate.estateserver.models.requests.RentalListRequest;
 import com.estate.estateserver.models.responses.RentalListResponse;
 import com.estate.estateserver.models.responses.RentalResponse;
 import com.estate.estateserver.repositories.IRentalRepository;
@@ -19,38 +22,59 @@ public class RentalServices {
 
 
     public RentalListResponse getAllRentals() {
-        List<Rental> rentals;
-        RentalListResponse rentalListResponse = new RentalListResponse();
+        RentalListResponse getRentalListResponse = new RentalListResponse();
         try {
             //1. Retrieve all rentals
-            rentals = findAllRentals();
+            List<Rental> rentals = findAllRentals();
             //2.Verify if there are rentals and return the list of rentals on a response object
             if (!rentals.isEmpty()) {
-                rentalListResponse = RentalListResponse.builder().rentals(rentals).build();
+                List<RentalResponse> gatheredRentalList = IRentalMapper.INSTANCE.rentalListToRentalResponseList(rentals);
+                getRentalListResponse = RentalListResponse.builder().rentals(gatheredRentalList).build();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return rentalListResponse;
+        return getRentalListResponse;
     }
 
-    public RentalListResponse postRentals(List<RentalResponse> rentals) {
+    public RentalListResponse postRentals(RentalListRequest rentalListToPost) {
+        //Init response object
         RentalListResponse postRentalResponse = new RentalListResponse();
+        //Try catch block to handle exceptions
         try {
-            List<Rental> rentalsList = RentalResponse.toEntity(rentals);
+            List<Rental> rentalsList = IRentalMapper.INSTANCE.rentalListRequestToRentalResponseList(rentalListToPost.getRentals());
             //1. Retrieve all rentals
             rentalsList = saveAllRentals(rentalsList);
             //2.Verify if there are rentals and return the list of rentals on a response object
-            if (!rentals.isEmpty()) {
-                rentals = RentalResponse.fromEntity(rentalsList);
-                postRentalResponse = RentalListResponse.builder().rentals(rentals).build();
+            if (!rentalsList.isEmpty()) {
+                List<RentalResponse> responses = IRentalMapper.INSTANCE.rentalListToRentalResponseList(rentalsList);
+                postRentalResponse = RentalListResponse.builder().rentals(responses).build();
+            } else {
+                throw new RepositoryException("Rental list not found", rentalListToPost.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return postRentalResponse;
+    }
+
+    public RentalResponse getRentalById(int id) {
+        RentalResponse rentalResponse = new RentalResponse();
+        try {
+            //1. Retrieve rental by id
+            Rental rentalFromDb = findById(id);
+            //2. Verify if rental exists
+            if (rentalFromDb != null) {
+                //3. Map rental to rental response
+                rentalResponse = IRentalMapper.INSTANCE.rentalToRentalResponse(rentalFromDb);
+            } else {
+                throw new RepositoryException(String.format("rental with id %s not found", id), rentalResponse.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rentalResponse;
     }
 
     @Transactional
@@ -61,5 +85,11 @@ public class RentalServices {
     @Transactional
     List<Rental> saveAllRentals(List<Rental> rentals) {
         return rentalRepository.saveAll(rentals);
+    }
+
+    @Transactional
+    Rental findById(int id) {
+        return rentalRepository.findById(id)
+                .orElse(null);
     }
 }

@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RentalListResponse {
 
-    @Schema(type = "string", description = "token")
-
+    @Schema(type = "array", description = "rental list")
     List<RentalResponse> rentals;
 
 }
