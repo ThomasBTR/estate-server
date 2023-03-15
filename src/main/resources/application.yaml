@@ -17,16 +17,10 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
+    show-sql: false
 estate:
   jwt:
     expiration: 86400000
-logging:
-  level:
-    org:
-      springframework: INFO
-    com:
-      estate: DEBUG
 server:
   port: 3001
 # swagger-ui custom path
@@ -40,4 +34,11 @@ springdoc:
     enabled: true # disable api-docs endpoint with false value
   show-oauth2-endpoint: true
   show-login-endpoint: true
+logging:
+  level:
+    org:
+      springframework: INFO
+    com:
+      estate: DEBUG
+  config: classpath:logback-spring.xml
 
