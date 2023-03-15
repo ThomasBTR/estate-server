@@ -45,8 +45,8 @@ public class RentalsController {
             @ApiResponse(responseCode = "401", description = "Access denied",
                     content = @Content)})
     @PostMapping(value = "/rentals", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<RentalListResponse> postRentals(@RequestBody RentalListRequest rentals) {
-        return ResponseEntity.ok(rentalServices.postRentals(rentals.getRentals()));
+    public ResponseEntity<RentalListResponse> postRentals(@RequestBody RentalListRequest rentalListRequest) {
+        return ResponseEntity.ok(rentalServices.postRentals(rentalListRequest));
     }
 
     @Operation(summary = "Find rental by id")
@@ -56,8 +56,8 @@ public class RentalsController {
                             schema = @Schema(implementation = RentalListResponse.class))}),
             @ApiResponse(responseCode = "401", description = "Access denied",
                     content = @Content)})
-    @GetMapping(value = "/rental/{id}", produces = "application/json")
-    public ResponseEntity<RentalResponse> getRentalById(@PathVariable Long id) {
+    @GetMapping(value = "/rentals/{id}", produces = "application/json")
+    public ResponseEntity<RentalResponse> getRentalById(@PathVariable int id) {
         return ResponseEntity.ok(rentalServices.getRentalById(id));
     }
 
