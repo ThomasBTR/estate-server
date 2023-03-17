@@ -3,7 +3,7 @@ package com.estate.estateserver.services;
 import com.estate.estateserver.exceptions.RepositoryException;
 import com.estate.estateserver.mappers.IRentalMapper;
 import com.estate.estateserver.models.entities.Rental;
-import com.estate.estateserver.models.requests.RentalListRequest;
+import com.estate.estateserver.models.requests.FormRequest;
 import com.estate.estateserver.models.responses.MessageResponse;
 import com.estate.estateserver.models.responses.RentalListResponse;
 import com.estate.estateserver.models.responses.RentalResponse;
@@ -39,22 +39,29 @@ public class RentalServices {
         return getRentalListResponse;
     }
 
-    public MessageResponse postRentals(RentalListRequest rentalListToPost) {
+    public MessageResponse postRental(FormRequest formRequest) {
         //Init response object
         String message = null;
         //Try catch block to handle exceptions
         try {
-            List<Rental> rentalsList = IRentalMapper.INSTANCE.rentalListRequestToRentalResponseList(rentalListToPost.getRentals());
+            Rental rental = Rental.builder()
+                    .name(formRequest.getName())
+                    .surface(formRequest.getSurface())
+                    .price(formRequest.getPrice())
+                    //TODO: Fix picture
+                    .picture(formRequest.getPicture().toString())
+                    .description(formRequest.getDescription())
+                    .build();
             //1. Retrieve all rentals
-            rentalsList = saveAllRentals(rentalsList);
+            Rental savedRental = saveRental(rental);
             //2.Verify if there are rentals and return the list of rentals on a response object
-            if (!rentalsList.isEmpty()) {
-                List<RentalResponse> responses = IRentalMapper.INSTANCE.rentalListToRentalResponseList(rentalsList);
-                message = "Rentals created !";
-                LOGGER.debug("{}: {}", message, responses);
+            if (savedRental != null) {
+                RentalResponse response = IRentalMapper.INSTANCE.rentalToRentalResponse(savedRental);
+                message = "Rental created !";
+                LOGGER.debug("{}: {}", message, response);
             } else {
                 message = "Rentals not created !";
-                throw new RepositoryException("Rental list not found", rentalListToPost.toString());
+                throw new RepositoryException("Rental list not found", formRequest.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,12 +89,13 @@ public class RentalServices {
         return rentalResponse;
     }
 
-    public MessageResponse putRentalPerId(int id, RentalResponse rentalResponse) {
+    public MessageResponse putRentalPerId(int id, FormRequest formRequest) {
         String message;
         try {
             //1. Retrieve rental by id
             Rental rentalFromDb = findById(id);
-            Rental rentalToSave = IRentalMapper.INSTANCE.rentalResponseToRental(rentalResponse);
+            //TODO: Fix this too
+            Rental rentalToSave = IRentalMapper.INSTANCE.FormRequestToRental(formRequest);
             //2. Verify if rental exists and is ok to update
             message = verifyRentalAndReturnResponseMessage(rentalFromDb, rentalToSave);
         } catch (Exception e) {
@@ -114,6 +122,7 @@ public class RentalServices {
         return message;
     }
 
+
     @Transactional
     List<Rental> findAllRentals() {
         return rentalRepository.findAll();
@@ -134,5 +143,6 @@ public class RentalServices {
     Rental saveRental(Rental rental) {
         return rentalRepository.save(rental);
     }
+
 
 }
