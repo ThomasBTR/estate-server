@@ -18,15 +18,14 @@ public interface IRentalMapper {
 
     Rental rentalResponseToRental(RentalResponse rental);
 
-    List<RentalResponse> rentalListToRentalResponseList(List<Rental> rentals);
-
-    List<Rental> rentalListRequestToRentalResponseList(List<RentalResponse> rentalListRequest);
-
-
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "ownerId", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    Rental FormRequestToRental(FormRequest formRequest);
+    @Mapping(target = "picture", ignore = true)
+    Rental formRequestToRental(FormRequest formRequest);
 
+    List<RentalResponse> rentalListToRentalResponseList(List<Rental> rentals);
+
+    List<Rental> rentalListRequestToRentalList(List<RentalResponse> rentalListRequest);
 }
