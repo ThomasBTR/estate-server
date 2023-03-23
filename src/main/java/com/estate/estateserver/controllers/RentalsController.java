@@ -1,6 +1,6 @@
 package com.estate.estateserver.controllers;
 
-import com.estate.estateserver.models.requests.FormRequest;
+import com.estate.estateserver.models.requests.RentalListRequest;
 import com.estate.estateserver.models.responses.MessageResponse;
 import com.estate.estateserver.models.responses.RentalListResponse;
 import com.estate.estateserver.services.RentalServices;
@@ -42,9 +42,9 @@ public class RentalsController {
                             schema = @Schema(implementation = MessageResponse.class))}),
             @ApiResponse(responseCode = "401", description = "Access denied",
                     content = @Content)})
-    @PostMapping(value = "/rentals", consumes = "multipart/form-data", produces = "application/json")
-    public ResponseEntity<MessageResponse> postRental(@ModelAttribute FormRequest formRequest) {
-        return ResponseEntity.ok(rentalServices.postRental(formRequest));
+    @PostMapping(value = "/rentals", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<MessageResponse> postRentals(@RequestParam("picture") RentalListRequest rentalListRequest) {
+        return ResponseEntity.ok(rentalServices.postRentals(rentalListRequest));
     }
 
 
