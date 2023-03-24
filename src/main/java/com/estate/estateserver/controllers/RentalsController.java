@@ -31,7 +31,7 @@ public class RentalsController {
             @ApiResponse(responseCode = "401", description = "Access denied",
                     content = @Content)})
     @GetMapping(value = "/rentals", produces = "application/json")
-    public ResponseEntity<RentalListResponse> getRentals() {
+    public ResponseEntity<RentalListResponse> getAllRentals() {
         return ResponseEntity.ok(rentalServices.getAllRentals());
     }
 
@@ -43,8 +43,8 @@ public class RentalsController {
             @ApiResponse(responseCode = "401", description = "Access denied",
                     content = @Content)})
     @PostMapping(value = "/rentals", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<MessageResponse> postRentals(@RequestParam("picture") RentalListRequest rentalListRequest) {
-        return ResponseEntity.ok(rentalServices.postRentals(rentalListRequest));
+    public ResponseEntity<MessageResponse> postAllRentals(@RequestBody RentalListRequest rentalListRequest) {
+        return ResponseEntity.ok(rentalServices.postAllRentals(rentalListRequest));
     }
 
 
