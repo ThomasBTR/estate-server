@@ -42,7 +42,7 @@ public class RentalServices {
         return getRentalListResponse;
     }
 
-    public MessageResponse postRentals(RentalListRequest rentalListRequest) {
+    public MessageResponse postAllRentals(RentalListRequest rentalListRequest) {
         //Init response object
         String message = null;
         //Try catch block to handle exceptions
@@ -52,10 +52,10 @@ public class RentalServices {
             //2.Verify if there are rentals and return the list of rentals on a response object
             if (!rentals.isEmpty()) {
                 rentals = saveAllRentals(rentals);
-                message = "Rental created !";
+                message = "Rental list created !";
                 LOGGER.debug("{}: {}", message, rentals);
             } else {
-                message = "Rentals not created !";
+                message = "Rental list not created !";
                 throw new RepositoryException("Error while saving rental list", rentals.toString());
             }
         } catch (Exception e) {
@@ -132,6 +132,7 @@ public class RentalServices {
             //1. Retrieve rental by id
             Rental rentalFromDb = findById(id);
             Rental rentalToSave = IRentalMapper.INSTANCE.formRequestToRental(formRequest);
+            rentalToSave.setId(id);
             //2. Verify if rental exists and is ok to update
             message = verifyRentalAndReturnResponseMessage(rentalFromDb, rentalToSave);
             //3. Persist in database
