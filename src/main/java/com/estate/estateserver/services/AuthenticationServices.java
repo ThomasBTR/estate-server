@@ -2,6 +2,7 @@ package com.estate.estateserver.services;
 
 
 import com.estate.estateserver.configurations.security.JwtService;
+import com.estate.estateserver.mappers.IUserMapper;
 import com.estate.estateserver.models.entities.Role;
 import com.estate.estateserver.models.entities.TokenEntity;
 import com.estate.estateserver.models.entities.TokenType;
@@ -76,13 +77,7 @@ public class AuthenticationServices {
         String email = getUsernameFromToken(token).getEmail();
         User user = getOrElseThrowUser(email);
         LOGGER.debug("User gathered successfully: {}", user.getEmail());
-        return UserResponse.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .build();
+        return IUserMapper.INSTANCE.userToUserResponse(user);
     }
 
     @Transactional

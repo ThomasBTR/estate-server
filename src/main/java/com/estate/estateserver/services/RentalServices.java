@@ -133,6 +133,7 @@ public class RentalServices {
             Rental rentalFromDb = findById(id);
             Rental rentalToSave = IRentalMapper.INSTANCE.formRequestToRental(formRequest);
             rentalToSave.setId(id);
+            rentalToSave.setOwnerId(rentalFromDb.getOwnerId());
             //2. Verify if rental exists and is ok to update
             message = verifyRentalAndReturnResponseMessage(rentalFromDb, rentalToSave);
             //3. Persist in database

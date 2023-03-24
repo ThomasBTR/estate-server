@@ -1,5 +1,6 @@
 package com.estate.estateserver.services;
 
+import com.estate.estateserver.mappers.IUserMapper;
 import com.estate.estateserver.models.entities.User;
 import com.estate.estateserver.models.responses.UserResponse;
 import com.estate.estateserver.repositories.IUserRepository;
@@ -24,13 +25,7 @@ public class UserServices {
         try {
             User user = getUserByIdFromRepository(id);
             if (user != null) {
-                userResponse = UserResponse.builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .email(user.getEmail())
-                        .createdAt(user.getCreatedAt())
-                        .updatedAt(user.getUpdatedAt())
-                        .build();
+                userResponse = IUserMapper.INSTANCE.userToUserResponse(user);
             } else {
                 String message = String.format("%s %s", "User not found : ", id);
                 LOGGER.error(message);
