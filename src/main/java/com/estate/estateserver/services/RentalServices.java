@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,6 +25,8 @@ public class RentalServices {
     private static final Logger LOGGER = LoggerFactory.getLogger(RentalServices.class);
     private final IRentalRepository rentalRepository;
     private final StorageServices storageServices;
+
+    private final AuthenticationServices authenticationServices;
 
     public RentalListResponse getAllRentals() {
         RentalListResponse getRentalListResponse = new RentalListResponse();
@@ -85,27 +88,28 @@ public class RentalServices {
     }
 
 
-    public MessageResponse postRentalPerId(int id, MultipartFile picture, String name, Double surface, Double price, String description) {
+    public MessageResponse postRentalPerId(String token, MultipartFile picture, String name, Double surface, Double price, String description) {
         //Init response object
         String message = null;
-        boolean isCreated = true;
         String picturePath = null;
         //Try catch block to handle exceptions
         try {
-            //1. Retrieve rental by id
-            Rental rentalFromDb = findById(id);
-            if (rentalFromDb != null) {
-                isCreated = false;
-            }
-            if (isCreated) {
-                picturePath = storageServices.store(picture);
-            }
+            //1. Retrieve next id to use
+            int id = getNextId();
+            //2. Retrieve user
+            int ownerId = authenticationServices.getUsernameFromToken(token).getId();
+            //2. Store picture and return path
+            picturePath = storageServices.storeFile(picture);
             Rental rental = Rental.builder()
+                    .id(id)
+                    .ownerId(ownerId)
                     .name(name)
                     .surface(surface)
                     .price(price)
-                    .picture(isCreated ? picturePath : rentalFromDb.getPicture())
+                    .picture(picturePath)
                     .description(description)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build();
             //1. Retrieve all rentals
             Rental savedRental = saveRental(rental);
@@ -182,5 +186,9 @@ public class RentalServices {
     @Transactional
     Rental saveRental(Rental rental) {
         return rentalRepository.save(rental);
+    }
+
+    private int getNextId() {
+        return getAllRentals().getRentals().size() + 1;
     }
 }

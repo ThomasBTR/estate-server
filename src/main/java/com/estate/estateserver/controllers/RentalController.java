@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -45,17 +44,5 @@ public class RentalController {
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<MessageResponse> putRentalPerId(@PathVariable int id, @ModelAttribute FormRequest formRequest) {
         return ResponseEntity.ok(rentalServices.putRentalPerId(id, formRequest));
-    }
-
-    @Operation(summary = "Save a new rental or update and existing rental", tags = {"Rentals"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Rental created or updated",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MessageResponse.class))}),
-            @ApiResponse(responseCode = "401", description = "Access denied",
-                    content = @Content)})
-    @PostMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<MessageResponse> postRentalPerId(@PathVariable int id, @RequestParam("picture") MultipartFile picture, @RequestParam("name") String name, @RequestParam("surface") Double surface, @RequestParam("price") Double price, @RequestParam("description") String description) {
-        return ResponseEntity.ok(rentalServices.postRentalPerId(id, picture, name, surface, price, description));
     }
 }

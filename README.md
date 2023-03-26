@@ -92,3 +92,24 @@ Add additional notes about how to deploy this on a live system
 ## Contributing
 
 ThomasBTR
+
+mdp admin : admin!31
+mdp test : test!31
+
+for linux or macOS users, if your project ist located at $HOME/estate-server, the value to set is :
+
+```yaml
+...
+estate:
+  file:
+    storage-mapping: file:~/Desktop/estate-server/src/main/resources/static/images
+```
+
+for Windows users, if this project is located on the local disk C at C:/projects/estate-server, the value to set is :
+
+```yaml
+...
+estate:
+  file:
+    storage-mapping: file:///D:/projects/estate-server/src/main/resources/static/images
+```

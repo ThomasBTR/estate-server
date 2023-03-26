@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormRequest {
+public class FormRequest implements Serializable {
     @Schema(type = "string", example = "Nice house", description = "offer name")
     @NotNull
     String name;
@@ -23,9 +24,9 @@ public class FormRequest {
     @Schema(type = "integer", example = "1", description = "offer price in local currency")
     @NotNull
     double price;
-    @Schema(type = "string", example = "1", description = "offer pictures")
+    @Schema(type = "picture", example = "1", description = "offer pictures")
     @NotNull
-    MultipartFile picture;
+    private MultipartFile picture;
     @Schema(type = "string", format = "binary", example = "1", description = "offer description")
     @NotNull
     String description;
