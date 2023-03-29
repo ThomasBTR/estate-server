@@ -19,6 +19,37 @@ services:
       MYSQL_PASSWORD: 'root'
       # Password for root access
       MYSQL_ROOT_PASSWORD: 'root'
-
+  minio:
+    container_name: ${MINIO_NAME}
+    image: minio/minio:latest
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      #Root user for minio
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      #Minio server url
+      MINIO_SERVER_URL: ${MINIO_REDIRECT_BROWSER_URL}
+    command: server --console-address ":9090" /data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "${MINIO_REDIRECT_BROWSER_URL}/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set ${MINIO_ALIAS} ${MINIO_DIRECT_URL} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc mb ${MINIO_ALIAS}/${MINIO_BUCKET_NAME};
+      /usr/bin/mc policy set public ${MINIO_ALIAS}/${MINIO_BUCKET_NAME};
+      exit 0;
+      "
 volumes:
   estate-mysql-data:
+  minio-data:

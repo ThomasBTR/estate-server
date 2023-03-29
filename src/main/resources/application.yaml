@@ -29,6 +29,10 @@ estate:
   file:
     upload-dir: ./src/main/resources/static/images
     storage-mapping: file:./src/main/resources/static/images/
+  minio:
+    endpoint: http://localhost:9000
+    user: estate-admin
+    password: estate-minio-secret-key
 server:
   port: 3001
 # swagger-ui custom path
