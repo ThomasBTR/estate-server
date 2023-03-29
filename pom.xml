@@ -103,6 +103,12 @@
             <artifactId>springdoc-openapi-javadoc</artifactId>
             <version>1.6.15</version>
         </dependency>
+        <!-- Minio.io -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.2</version>
+        </dependency>
     </dependencies>
 
     <build>
