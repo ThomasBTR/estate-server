@@ -9,7 +9,7 @@ CREATE TABLE RENTALS
     name        VARCHAR(255),
     surface     numeric,
     price       numeric,
-    picture     VARCHAR(255),
+    picture     VARCHAR(2000),
     description VARCHAR(2000),
     owner_id    INTEGER,
     created_at  timestamp,

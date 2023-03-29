@@ -4,7 +4,6 @@ import com.estate.estateserver.exceptions.RepositoryException;
 import com.estate.estateserver.mappers.IRentalMapper;
 import com.estate.estateserver.models.entities.Rental;
 import com.estate.estateserver.models.requests.FormRequest;
-import com.estate.estateserver.models.requests.RentalListRequest;
 import com.estate.estateserver.models.responses.MessageResponse;
 import com.estate.estateserver.models.responses.RentalListResponse;
 import com.estate.estateserver.models.responses.RentalResponse;
@@ -24,10 +23,10 @@ import java.util.List;
 public class RentalServices {
     private static final Logger LOGGER = LoggerFactory.getLogger(RentalServices.class);
     private final IRentalRepository rentalRepository;
-    private final StorageServices storageServices;
-
+    private final MinioServices minioServices;
     private final AuthenticationServices authenticationServices;
 
+    @Transactional
     public RentalListResponse getAllRentals() {
         RentalListResponse getRentalListResponse = new RentalListResponse();
         try {
@@ -45,29 +44,7 @@ public class RentalServices {
         return getRentalListResponse;
     }
 
-    public MessageResponse postAllRentals(RentalListRequest rentalListRequest) {
-        //Init response object
-        String message = null;
-        //Try catch block to handle exceptions
-        try {
-            //1. Map rental request to rental entity
-            List<Rental> rentals = IRentalMapper.INSTANCE.rentalListRequestToRentalList(rentalListRequest.getRentals());
-            //2.Verify if there are rentals and return the list of rentals on a response object
-            if (!rentals.isEmpty()) {
-                rentals = saveAllRentals(rentals);
-                message = "Rental list created !";
-                LOGGER.debug("{}: {}", message, rentals);
-            } else {
-                message = "Rental list not created !";
-                throw new RepositoryException("Error while saving rental list", rentals.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return MessageResponse.builder().message(message).build();
-    }
-
+    @Transactional
     public RentalResponse getRentalById(int id) {
         RentalResponse rentalResponse = new RentalResponse();
         try {
@@ -87,11 +64,11 @@ public class RentalServices {
         return rentalResponse;
     }
 
-
+    @Transactional
     public MessageResponse postRentalPerId(String token, MultipartFile picture, String name, Double surface, Double price, String description) {
         //Init response object
         String message = null;
-        String picturePath = null;
+        String picturePath;
         //Try catch block to handle exceptions
         try {
             //1. Retrieve next id to use
@@ -99,7 +76,8 @@ public class RentalServices {
             //2. Retrieve user
             int ownerId = authenticationServices.getUsernameFromToken(token).getId();
             //2. Store picture and return path
-            picturePath = storageServices.storeFile(picture);
+            picturePath = minioServices.uploadImage(picture);
+
             Rental rental = Rental.builder()
                     .id(id)
                     .ownerId(ownerId)
@@ -129,7 +107,7 @@ public class RentalServices {
         return MessageResponse.builder().message(message).build();
     }
 
-
+    @Transactional
     public MessageResponse putRentalPerId(int id, FormRequest formRequest) {
         String message;
         try {
@@ -148,6 +126,7 @@ public class RentalServices {
         LOGGER.debug("Rental updated : {}", message);
         return MessageResponse.builder().message(message).build();
     }
+
 
     private String verifyRentalAndReturnResponseMessage(Rental rentalFromDb, Rental rentalToSave) {
         String message;
@@ -168,23 +147,18 @@ public class RentalServices {
 
 
     @Transactional
-    List<Rental> findAllRentals() {
+    public List<Rental> findAllRentals() {
         return rentalRepository.findAll();
     }
 
     @Transactional
-    List<Rental> saveAllRentals(List<Rental> rentals) {
-        return rentalRepository.saveAll(rentals);
-    }
-
-    @Transactional
-    Rental findById(int id) {
+    public Rental findById(int id) {
         return rentalRepository.findById(id)
                 .orElse(null);
     }
 
     @Transactional
-    Rental saveRental(Rental rental) {
+    public Rental saveRental(Rental rental) {
         return rentalRepository.save(rental);
     }
 
