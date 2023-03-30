@@ -12,19 +12,92 @@ These instructions will get you a copy of the project up and running on your loc
     git clone https://github.com/ThomasBTR/estate-server.git
     ```
 
+- Go to the docker compose folder
+
+    ```bash
+    cd estate-server/docker
+    ```  
+
+- Run the following command to start the database and the minio server
+
+    ```bash
+    docker-compose up -d
+    ```
+
+- Go to the project folder
+
+    ```bash
+    cd estate-server
+    ```
+- Run the following command to install the project
+
+    ```bash
+    mvn clean install
+    ```
+- Run the following command to run the project
+
+    ```bash
+    mvn spring-boot:run
+    ```
+- The project is now running on http://localhost:3001
+- The documentation is available on http://localhost:3001/swagger-ui/index.html
+- The API documentation is available on http://localhost:3001/api/v1/docs
+- The database is running on http://localhost:3306
+- The minio server is running on http://localhost:9000
 
 ### Prerequisites
 
 What things you need to install the software and how to install them
 
-You will need [maven](https://maven.apache.org/install.html) to build the project
+You will need for this project :
 
-This project run on Java 17, you can download it [here](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html)
+- [maven](https://maven.apache.org/install.html) to build the project
+- [Java 17](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html) to run the project
+- [Docker](https://docs.docker.com/get-docker/) to run the database and the minio server
 
-### Installing
+### The database and minio server
+
+To simulate the database and the minio server, we will use docker.
+Using a docker compose file, I set up the MySql database and a minio server to reproduce an object storage container.
+The minio server can be replaced by an AWS S3 bucket.
+
+#### What you will found
+
+- In the ./docker/ folder, you will find :
+  - the docker-compose.yml file that will run the database and the minio server.
+  - the ./docker/.env file that contains the environment variables for the database and the minio server.
+
+#### Environment variables
+
+Everything is commented so you can easily understand what is going on.
+
+- The environment variables are defined in the ./docker/.env file.
+- The variables for spring are defined in the ./src/main/resources/application.yaml file.
+- Estate peculiar variables are the following :
+
+```yaml
+...
+  
+...
+```
+
+#### Running and stopping the database and the minio server with docker compose
+
+- Go to ./docker/, run the following command :
+
+    ```bash
+    docker-compose up -d
+    ```
+
+- To stop the database and the minio server, run the following command :
+
+    ```bash
+    docker-compose down
+    ```
+
+### Installing the project
 
 A step by step series of examples that tell you how to get a development env running
-
 
 - To quickly run all maven cycle on this project, run the following command :
 
@@ -42,7 +115,7 @@ A step by step series of examples that tell you how to get a development env run
 
 The documentation is based on the [spring doc](https://springdoc.org/v2/) specification.
 
-Configured endpoints are definied in the application.yaml as follows :
+Configured endpoints are defined in the application.yaml as follows :
 
 ```yaml
 springdoc:
@@ -88,13 +161,17 @@ Add additional notes about how to deploy this on a live system
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [Spring](https://spring.io/) - The web framework used
+* [Spring Security](https://spring.io/projects/spring-security) - Authentication and authorization framework
+* [Spring Data](https://spring.io/projects/spring-data) - Data access framework
+* [Spring Doc](https://springdoc.org/) - OpenAPI 3 and Swagger 2 generation for Spring REST APIs
+* [Spring Boot](https://spring.io/projects/spring-boot) - Framework to ease the bootstrapping and development of new
+  Spring Applications
+* [Minio](https://min.io/) - Open Source Object Storage
 
 ## Contributing
 
 ThomasBTR
-
-mdp admin : admin!31
-mdp test : test!31
 
 for linux or macOS users, if your project ist located at $HOME/estate-server, the value to set is :
 
