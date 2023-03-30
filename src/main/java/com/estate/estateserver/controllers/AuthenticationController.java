@@ -4,14 +4,13 @@ import com.estate.estateserver.models.requests.AuthenticationRequest;
 import com.estate.estateserver.models.requests.RegisterRequest;
 import com.estate.estateserver.models.responses.AuthenticationResponse;
 import com.estate.estateserver.models.responses.UserResponse;
-import com.estate.estateserver.services.AuthenticationService;
+import com.estate.estateserver.services.AuthenticationServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,51 +18,47 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "Authentication", description = "The Authentication API")
 public class AuthenticationController {
 
-    private final AuthenticationService service;
+    private final AuthenticationServices service;
 
-    @Operation(summary = "Get user info from token", security = {@SecurityRequirement(name = "token")})
+    @Operation(summary = "Get user info from token", security = {@SecurityRequirement(name = "token")}, tags = {"Authentication", "User Information"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Token found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AuthenticationResponse.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationResponse.class))}),
             @ApiResponse(responseCode = "401", description = "Access denied",
-                    content = @Content) })
+                    content = @Content)})
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> me(@RequestHeader("Authorization") String token)
-    {
+    public ResponseEntity<UserResponse> me(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(service.me(token));
     }
 
-    @Operation(summary = "Register a new user")
+    @Operation(summary = "Register a new user", tags = {"Authentication"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User registered",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AuthenticationResponse.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationResponse.class))}),
             @ApiResponse(responseCode = "401", description = "Access denied",
-                    content = @Content) })
+                    content = @Content)})
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-             @RequestBody RegisterRequest request
-    )
-    {
+            @RequestBody RegisterRequest request
+    ) {
         return ResponseEntity.ok(service.register(request));
     }
 
-    @Operation(summary = "Login with an existing user")
+    @Operation(summary = "Login with an existing user", tags = {"Authentication"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User retrieved",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AuthenticationResponse.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationResponse.class))}),
             @ApiResponse(responseCode = "401", description = "Access denied",
-                    content = @Content) })
+                    content = @Content)})
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody AuthenticationRequest request
-    )
-    {
+    ) {
         return ResponseEntity.ok(service.login(request));
     }
 

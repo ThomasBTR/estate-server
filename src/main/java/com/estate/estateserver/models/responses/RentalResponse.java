@@ -1,5 +1,7 @@
 package com.estate.estateserver.models.responses;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RentalResponse {
 
     @Id
@@ -31,7 +34,7 @@ public class RentalResponse {
     String picture;
     @Schema(type = "string", example = "Really nice house in the suburb", description = "description")
     String description;
-    @Schema(type = "double", example = "3", description = "ownerId")
+    @Schema(type = "integer", example = "3", description = "ownerId")
     Integer ownerId;
     @Schema(type = "date", example = "2012-12-02T00:00:00", description = "creation date of the offer")
     LocalDateTime createdAt;

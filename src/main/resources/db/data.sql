@@ -1,5 +1,5 @@
 INSERT INTO USERS(name, email, password, created_at, updated_at, role, enabled)
-VALUES ('admin', 'toto@gmail.com', '$2a$10$Pu82bKudIeT4VWJWbthEReOyKsz6SJj6aFuuYt0iNBn6kJUeViPci', '2012/12/02',
+VALUES ('admin', 'admin@test.com', '$2a$10$9y56FZxZRlEqAiDFjTwiV.I1V6XroVOh/d7KiGSOi68FDT.1bdNla', '2012/12/02',
         '2014/12/02', 'ADMIN', 1),
        ('test TEST', 'test@test.com', '$2a$10$2Ypxvjh8x/hM2MIRfrI7F./VShkFQjvkjEdWax4UG2/S3bRfZ1cRe', '2012/12/02',
         '2014/12/02', 'USER', 1);
