@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: estate
+  servlet:
+    multipart:
+      enabled: true # enable multipart
+      max-file-size: 10MB # max file size
+      max-request-size: 10MB # max request size
+  datasource:
+    url: jdbc:mysql://localhost:3306/ESTATE # MySQL server url
+    username: root # MySQL server username
+    password: root # MySQL server password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db\script.sql # MySQL script file
+      continue-on-error: false # Prevents the application from starting if the script fails
+      data-locations: classpath:db\data.sql # MySQL data file
+  jpa:
+    hibernate:
+      ddl-auto: none # Prevents Hibernate from automatically creating tables
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false # Do not show SQL queries in console
+estate:
+  jwt:
+    expiration: 86400000 # 1 day
+  minio:
+    endpoint: http://localhost # Minio server url
+    port: 9000 # Minio server port
+    user: estate-admin # Minio root user
+    password: estate-minio-secret-key # Minio root password
+    bucket: estate-images # Minio bucket name
+    retentionHours: 24 # Minio bucket object retention hours
+server:
+  port: 3001 # Server port
+# swagger-ui custom path
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html # default value
+    enabled: true  #disable swagger-ui endpoint with false value
+  # /api-docs endpoint custom path
+  api-docs:
+    path: /api/v1/docs # default value
+    enabled: true # disable api-docs endpoint with false value
+  show-oauth2-endpoint: true # enable oauth2 endpoint
+  show-login-endpoint: true # enable login endpoint
+logging:
+  level:
+    org:
+      springframework: INFO
+    com:
+      estate: DEBUG
+  config: classpath:logback-spring.xml # logback config file
+
