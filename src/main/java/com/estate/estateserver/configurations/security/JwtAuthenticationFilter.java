@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         {
-            try{
+            try {
                 filterOutOrVerifyToken(request);
                 filterChain.doFilter(request, response);
             } catch (AccessDeniedException e) {
@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void verifyJwtToken(HttpServletRequest request, String authHeader) {
-        try{
+        try {
 
             final String jwt;
             String userEmail;
