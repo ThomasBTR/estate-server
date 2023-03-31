@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -43,7 +45,18 @@ public class AuthenticationController {
                     content = @Content)})
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
+            @RequestBody
+            @Valid
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Login request body",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = RegisterRequest.class
+                            )
+                    )
+            )
+            RegisterRequest request
     ) {
         return ResponseEntity.ok(service.register(request));
     }
@@ -57,7 +70,18 @@ public class AuthenticationController {
                     content = @Content)})
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody AuthenticationRequest request
+            @RequestBody
+            @Valid
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Login request body",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = AuthenticationRequest.class
+                            )
+                    )
+            )
+            AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.login(request));
     }

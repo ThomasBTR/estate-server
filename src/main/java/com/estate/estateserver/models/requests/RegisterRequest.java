@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,10 +15,14 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
 
     @Schema(type = "string", example = "Liliane", description = "username")
+    @NotBlank
     private String name;
 
     @Schema(type = "string", example = "lili@green.com", description = "user email")
+    @NotBlank
     private String email;
+
     @Schema(type = "string", example = "lili4U", description = "password")
+    @NotBlank
     private String password;
 }
