@@ -16,8 +16,7 @@ public interface IRentalMapper {
 
     RentalResponse rentalToRentalResponse(Rental rental);
 
-    Rental rentalResponseToRental(RentalResponse rental);
-
+    @Mapping(target = "messages", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "ownerId", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -26,6 +25,4 @@ public interface IRentalMapper {
     Rental formRequestToRental(FormRequest formRequest);
 
     List<RentalResponse> rentalListToRentalResponseList(List<Rental> rentals);
-
-    List<Rental> rentalListRequestToRentalList(List<RentalResponse> rentalListRequest);
 }

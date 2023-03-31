@@ -69,7 +69,7 @@ The minio server can be replaced by an AWS S3 bucket.
 
 #### Environment variables
 
-Everything is commented so you can easily understand what is going on.
+Everything is commented, so you can easily understand what is going on.
 
 - The environment variables are defined in the ./docker/.env file.
 - The variables for spring are defined in the ./src/main/resources/application.yaml file.
