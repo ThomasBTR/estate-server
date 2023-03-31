@@ -51,6 +51,10 @@ public class User implements UserDetails {
     @ToString.Exclude
     private List<TokenEntity> tokens;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Message> messagesSent;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

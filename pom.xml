@@ -16,6 +16,8 @@
         <java.version>17</java.version>
         <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+        <spring-framework.version>5.3.26</spring-framework.version> <!-- Fix cve-2023-20861 and others -->
+
     </properties>
     <dependencies>
         <!-- Spring Boot -->

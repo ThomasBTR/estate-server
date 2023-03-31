@@ -20,6 +20,7 @@ public class UserServices {
     private final IUserRepository userRepository;
 
 
+    @Transactional
     public UserResponse getUserById(int id) {
         UserResponse userResponse = new UserResponse();
         try {
@@ -38,7 +39,7 @@ public class UserServices {
     }
 
     @Transactional
-    User getUserByIdFromRepository(int id) {
+    public User getUserByIdFromRepository(int id) {
         return userRepository.findById(id).orElseThrow();
     }
 }

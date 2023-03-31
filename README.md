@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Go to the docker compose folder
 
     ```bash
-    cd estate-server/docker
+    cd docker
     ```  
 
 - Run the following command to start the database and the minio server
@@ -69,7 +69,7 @@ The minio server can be replaced by an AWS S3 bucket.
 
 #### Environment variables
 
-Everything is commented so you can easily understand what is going on.
+Everything is commented, so you can easily understand what is going on.
 
 - The environment variables are defined in the ./docker/.env file.
 - The variables for spring are defined in the ./src/main/resources/application.yaml file.
@@ -172,21 +172,3 @@ Add additional notes about how to deploy this on a live system
 ## Contributing
 
 ThomasBTR
-
-for linux or macOS users, if your project ist located at $HOME/estate-server, the value to set is :
-
-```yaml
-...
-estate:
-  file:
-    storage-mapping: file:~/Desktop/estate-server/src/main/resources/static/images
-```
-
-for Windows users, if this project is located on the local disk C at C:/projects/estate-server, the value to set is :
-
-```yaml
-...
-estate:
-  file:
-    storage-mapping: file:///D:/projects/estate-server/src/main/resources/static/images
-```
