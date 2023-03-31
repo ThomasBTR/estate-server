@@ -36,6 +36,7 @@ public class AuthenticationServices {
     private final AuthenticationManager authenticationManager;
     private final ITokenRepository tokenRepository;
 
+    @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
         User user = User.builder()
                 .name(request.getName())
@@ -55,6 +56,7 @@ public class AuthenticationServices {
                 .build();
     }
 
+    @Transactional
     public AuthenticationResponse login(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -73,6 +75,7 @@ public class AuthenticationServices {
     }
 
 
+    @Transactional
     public UserResponse me(String token) {
         String email = getUsernameFromToken(token).getEmail();
         User user = getOrElseThrowUser(email);
@@ -81,19 +84,19 @@ public class AuthenticationServices {
     }
 
     @Transactional
-    User getOrElseThrowUser(String email) {
+    public User getOrElseThrowUser(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow();
     }
 
     @Transactional
-    User getUsernameFromToken(String token) {
+    public User getUsernameFromToken(String token) {
         return userRepository.findByEmail(jwtService.extractUsername(token.substring(7)))
                 .orElseThrow();
     }
 
     @Transactional
-    void saveUserToken(User user, String jwtToken) {
+    public void saveUserToken(User user, String jwtToken) {
         var token = TokenEntity.builder()
                 .user(user)
                 .token(jwtToken)
@@ -116,17 +119,17 @@ public class AuthenticationServices {
     }
 
     @Transactional
-    User getSavedUser(User user) {
+    public User getSavedUser(User user) {
         return userRepository.save(user);
     }
 
     @Transactional
-    void saveUserTokens(List<TokenEntity> validUserTokens) {
+    public void saveUserTokens(List<TokenEntity> validUserTokens) {
         tokenRepository.saveAll(validUserTokens);
     }
 
     @Transactional
-    List<TokenEntity> getAllValidTokenByUser(User user) {
+    public List<TokenEntity> getAllValidTokenByUser(User user) {
         return tokenRepository.findAllValidTokenByUser(user.getId());
     }
 }
