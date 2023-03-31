@@ -113,9 +113,7 @@ public class RentalServices {
         try {
             //1. Retrieve rental by id
             Rental rentalFromDb = findById(id);
-            Rental rentalToSave = IRentalMapper.INSTANCE.formRequestToRental(formRequest);
-            rentalToSave.setId(id);
-            rentalToSave.setOwnerId(rentalFromDb.getOwnerId());
+            Rental rentalToSave = buildRental(IRentalMapper.INSTANCE.formRequestToRental(formRequest), rentalFromDb);
             //2. Verify if rental exists and is ok to update
             message = verifyRentalAndReturnResponseMessage(rentalFromDb, rentalToSave);
             //3. Persist in database
@@ -127,12 +125,29 @@ public class RentalServices {
         return MessageResponse.builder().message(message).build();
     }
 
+    private Rental buildRental(Rental rentalFromForm, Rental rentalFromDb) {
+        return Rental.builder()
+                .id(rentalFromDb.getId())
+                .name(rentalFromForm.getName())
+                .surface(rentalFromForm.getSurface())
+                .price(rentalFromForm.getPrice())
+                .description(rentalFromForm.getDescription())
+                .picture(rentalFromDb.getPicture())
+                .ownerId(rentalFromDb.getOwnerId())
+                .createdAt(rentalFromDb.getCreatedAt())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
+
 
     private String verifyRentalAndReturnResponseMessage(Rental rentalFromDb, Rental rentalToSave) {
         String message;
         if ((rentalFromDb != null) && rentalToSave.getId() == rentalFromDb.getId()) {
             //3. Persist in database
             rentalToSave.setPicture(rentalFromDb.getPicture());
+            rentalToSave.setOwnerId(rentalFromDb.getOwnerId());
+            rentalToSave.setCreatedAt(rentalFromDb.getCreatedAt());
+            rentalToSave.setUpdatedAt(LocalDateTime.now());
             rentalToSave = saveRental(rentalToSave);
             if (rentalToSave != null) {
                 message = "Rental updated successfully";
