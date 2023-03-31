@@ -24,7 +24,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 @Tag(name = "Rentals", description = "Rentals API"),
                 @Tag(name = "Rental per id", description = "Rental per id API"),
                 @Tag(name = "Authentication", description = "The Authentication API"),
-                @Tag(name = "User Information", description = "User info API, part of the Authentication")
+                @Tag(name = "User Information", description = "User info API, part of the Authentication"),
+                @Tag(name = "Messages", description = "Messages API, to allow a user send messages to the owner of a rental")
         }
 )
 @SecurityScheme(name = "token", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
