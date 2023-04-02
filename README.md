@@ -1,9 +1,10 @@
 ![GitHub](https://img.shields.io/github/license/ThomasBTR/estate-server?style=for-the-badge)![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ThomasBTR/estate-server?include_prereleases&style=for-the-badge)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ThomasBTR/estate-server?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/ThomasBTR/estate-server?style=for-the-badge)
 # Estate-Server
 
 As part of the ChâTop project, this is the server part of the project.
-It is a RESTful API that is used to store and retrieve data from the Estate database.
+It is a RESTful API that is used to store and retrieve data from the Estate database protected by a JWT authentication system.
 
 The front part is available here : [Estate-Front](https://github.com/ThomasBTR/estate-front) forked from OpenClassRooms projects.
 
@@ -156,7 +157,14 @@ For example, if you run on your machine without changing the server port, the do
 here: http://localhost:3001/swagger-ui/index.html
 and you will get the API documentation from this link : http://localhost:3001/api/v1/docs
 
-End with an example of getting some data out of the system or using it for a little demo
+### About the security
+
+The security is based on [spring security](https://spring.io/projects/spring-security) and [JWT](https://jwt.io/).
+
+The security is configured in the SecurityConfig class. 
+The security is configured to allow access to the documentation endpoints and the authentication endpoint.
+To access to the other estate endpoints, you will need to be an authenticated users. This is verified at each request with JWT token given in the Authorization header.
+
 
 ## Running the tests - currently not implemented
 
