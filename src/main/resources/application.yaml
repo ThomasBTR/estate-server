@@ -1,3 +1,13 @@
+estate:
+  jwt:
+    expiration: 86400000 # 1 day
+  minio:
+    endpoint: http://localhost # Minio server url
+    port: 9000 # Minio server port
+    user: estate-admin # Minio root user
+    password: estate-minio-secret-key # Minio root password
+    bucket: estate-images # Minio bucket name
+    retentionHours: 24 # Minio bucket object retention hours
 spring:
   application:
     name: estate
@@ -23,16 +33,6 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: false # Do not show SQL queries in console
-estate:
-  jwt:
-    expiration: 86400000 # 1 day
-  minio:
-    endpoint: http://localhost # Minio server url
-    port: 9000 # Minio server port
-    user: estate-admin # Minio root user
-    password: estate-minio-secret-key # Minio root password
-    bucket: estate-images # Minio bucket name
-    retentionHours: 24 # Minio bucket object retention hours
 server:
   port: 3001 # Server port
 # swagger-ui custom path

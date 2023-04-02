@@ -1,6 +1,11 @@
+![GitHub](https://img.shields.io/github/license/ThomasBTR/estate-server?style=for-the-badge)![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ThomasBTR/estate-server?include_prereleases&style=for-the-badge)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ThomasBTR/estate-server?style=for-the-badge)
 # Estate-Server
 
-This is the server for the Estate project. It is a RESTful API that is used to store and retrieve data from the Estate database.
+As part of the ChâTop project, this is the server part of the project.
+It is a RESTful API that is used to store and retrieve data from the Estate database.
+
+The front part is available here : [Estate-Front](https://github.com/ThomasBTR/estate-front) forked from OpenClassRooms projects.
 
 ## Getting Started
 
@@ -38,12 +43,16 @@ These instructions will get you a copy of the project up and running on your loc
 
     ```bash
     mvn spring-boot:run
-    ```
-- The project is now running on http://localhost:3001
-- The documentation is available on http://localhost:3001/swagger-ui/index.html
-- The API documentation is available on http://localhost:3001/api/v1/docs
-- The database is running on http://localhost:3306
-- The minio server is running on http://localhost:9000
+    ``` 
+
+- The project is now running on  [http://localhost:3001](http://localhost:3001)
+- The documentation is available on [http://localhost:3001/swagger-ui/index.html](http://localhost:3001/swagger-ui/index.html)
+- The API documentation is available on [http://localhost:3001/api/v1/docs](http://localhost:3001/api/v1/docs)
+- The database is running on [http://localhost:3306](http://localhost:3306)
+  - The database default root user is : *root* and the password is : *root*
+- The minio server is running on [http://localhost:9000](http://localhost:9000)
+  - the minio default user is : *estate-admin* and the password is : *estate-minio-secret-key*
+
 
 ### Prerequisites
 
@@ -51,9 +60,9 @@ What things you need to install the software and how to install them
 
 You will need for this project :
 
-- [maven](https://maven.apache.org/install.html) to build the project
-- [Java 17](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html) to run the project
-- [Docker](https://docs.docker.com/get-docker/) to run the database and the minio server
+- [maven](https://maven.apache.org/install.html) to build the project (current : 3.6.3)
+- [Java 17](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html) to run the project (current : openjdk 17.0.6 2023-01-17)
+- [Docker](https://docs.docker.com/get-docker/) to run the database and the minio server (current : 23.0.2, build 569dd73)
 
 ### The database and minio server
 
@@ -77,7 +86,16 @@ Everything is commented, so you can easily understand what is going on.
 
 ```yaml
 ...
-  
+estate:
+  jwt:
+    expiration: 86400000 # 1 day
+  minio:
+    endpoint: http://localhost # Minio server url
+    port: 9000 # Minio server port
+    user: estate-admin # Minio root user
+    password: estate-minio-secret-key # Minio root password
+    bucket: estate-images # Minio bucket name
+    retentionHours: 24 # Minio bucket object retention hours
 ...
 ```
 
@@ -128,19 +146,19 @@ springdoc:
 ### A fair warning :
 
 ***A specific endpoint is defined in configuration to get the documentation of the API out of the security scope.
-</br>This is done only for demonstration purpose, in a real world application, the documentation should be secured.***
+This is done only for demonstration purpose, in a real world application, the documentation should be secured.***
 
 The documentation path is defined per se in spring-doc specification of
 the [swagger-ui](https://springdoc.org/v2/#getting-started)
 and [api-docs](https://springdoc.org/v2/#spring-webmvc-support) endpoints.
 
 For example, if you run on your machine without changing the server port, the documentation will be available
-here: http://localhost:3001/swagger-ui/index.html </br>
+here: http://localhost:3001/swagger-ui/index.html
 and you will get the API documentation from this link : http://localhost:3001/api/v1/docs
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests -currently not implemented
+## Running the tests - currently not implemented
 
 The only test implemented are unit tests for spring starting purpose.
 Unit test are not on the scope of this project.
@@ -150,7 +168,7 @@ Unit test are not on the scope of this project.
     mvn clean test
     ```
 
-### Break down into end-to-end tests -currently not implemented
+### Break down into end-to-end tests - currently not implemented
 
 End to end or integration tests are not on the scope of this project.
 
