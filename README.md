@@ -1,6 +1,9 @@
-![GitHub](https://img.shields.io/github/license/ThomasBTR/estate-server?style=for-the-badge)![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ThomasBTR/estate-server?include_prereleases&style=for-the-badge)
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ThomasBTR/estate-server?include_prereleases&style=for-the-badge)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ThomasBTR/estate-server?style=for-the-badge)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ThomasBTR/estate-server?style=for-the-badge)
+
+![GitHub](https://img.shields.io/github/license/ThomasBTR/estate-server?style=flat-square)
+
 # Estate-Server
 
 As part of the ChâTop project, this is the server part of the project.
