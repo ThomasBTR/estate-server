@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  mysql:
+    restart: on-failure
+    image: mysql:5.7
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+    volumes:
+      - estate-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: 'ESTATE'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'user'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'root'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'root'
+  minio:
+    container_name: ${MINIO_NAME}
+    image: minio/minio:RELEASE.2023-03-24T21-41-23Z
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      #Root user for minio
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      #Minio server url
+      MINIO_SERVER_URL: ${MINIO_REDIRECT_BROWSER_URL}
+    command: server --console-address ":9090" /data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "${MINIO_REDIRECT_BROWSER_URL}/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: > # Script to create bucket and set policy
+      /bin/sh -c "
+      /usr/bin/mc alias set ${MINIO_ALIAS} ${MINIO_DIRECT_URL} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc mb ${MINIO_ALIAS}/${MINIO_BUCKET_NAME};
+      /usr/bin/mc policy set public ${MINIO_ALIAS}/${MINIO_BUCKET_NAME};
+      exit 0;
+      "
+volumes:
+  estate-mysql-data:
+  minio-data:
